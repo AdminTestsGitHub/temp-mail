@@ -1,255 +1,202 @@
-# Temp Mail Worker
+<!-- markdownlint-disable-file MD033 MD045 -->
+# Cloudflare 临时邮箱 - 免费搭建临时邮件服务
 
-Cloudflare Worker that acts as a temporary email inbox.
+<p align="center">
+  <a href="https://temp-mail-docs.awsl.uk" target="_blank">
+    <img alt="docs" src="https://img.shields.io/badge/docs-grey?logo=vitepress">
+  </a>
+  <a href="https://github.com/dreamhunter2333/cloudflare_temp_email/releases/latest" target="_blank">
+    <img src="https://img.shields.io/github/v/release/dreamhunter2333/cloudflare_temp_email">
+  </a>
+  <a href="https://github.com/dreamhunter2333/cloudflare_temp_email/blob/main/LICENSE" target="_blank">
+    <img alt="MIT License" src="https://img.shields.io/github/license/dreamhunter2333/cloudflare_temp_email">
+  </a>
+  <a href="https://github.com/dreamhunter2333/cloudflare_temp_email/graphs/contributors" target="_blank">
+   <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/dreamhunter2333/cloudflare_temp_email">
+  </a>
+  <a href="">
+    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/dreamhunter2333/cloudflare_temp_email">
+  </a>
+  <a href="">
+    <img src="https://img.shields.io/github/last-commit/dreamhunter2333/cloudflare_temp_email">
+  </a>
+</p>
 
-**API documentation:** [https://api.barid.site](https://api.barid.site)
+<p align="center">
+  <a href="https://hellogithub.com/repository/2ccc64bb1ba346b480625f584aa19eb1" target="_blank">
+    <img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=2ccc64bb1ba346b480625f584aa19eb1&claim_uid=FxNypXK7UQ9OECT" alt="Featured｜HelloGitHub" height="30"/>
+  </a>
+</p>
 
-AI-made web client: [https://web.barid.site](https://web.barid.site)
+<p align="center">
+  <a href="README.md">中文文档</a> |
+  <a href="README_EN.md">English Document</a>
+</p>
 
-## Table of Contents
+> 本项目仅供学习和个人用途，请勿将其用于任何违法行为，否则后果自负。
 
-*   [Features](#features)
-*   [Supporters](#supporters)
-*   [Community](#community-built-stuff)
-*   [Setup Guide](#setup-guide)
-    *   [Prerequisites](#prerequisites)
-    *   [Project Setup](#project-setup)
-    *   [Cloudflare Configuration](#cloudflare-configuration)
-        *   [D1 Database Setup](#d1-database-setup)
-        *   [R2 Bucket Setup](#r2-bucket-setup)
-        *   [Email Routing Setup](#email-routing-setup)
-*   [Running the Worker](#running-the-worker)
-    *   [Cloudflare Information Script (Optional)](#cloudflare-information-script-optional)
-    *   [Telegram Logging (Optional)](#telegram-logging-optional)
-    *   [Local Development](#local-development)
-    *   [Deployment](#deployment)
+**一个功能完整的临时邮箱服务！**
 
----
+- **完全免费** - 基于 Cloudflare 免费服务构建，零成本运行
+- **高性能** - Rust WASM 邮件解析，响应速度极快
+- **现代化界面** - 响应式设计，支持多语言，操作简便
+- **地址密码** - 支持为邮箱地址设置独立密码，增强安全性
+- **Agent 友好** - 内置邮箱 [`skill`](skills/cf-temp-mail-agent-mail/SKILL.md)，方便 AI agent 使用邮箱
+- **移动端管理** - 社区客户端 [CloudMail](https://github.com/Lur1N77777/CloudMail)，支持 Android 管理后台和邮箱管理
 
-## Features
+## 部署文档 - 快速开始
 
-*   Receives emails via Cloudflare Email Routing.
-*   Stores email data in a Cloudflare D1 database.
-*   **Attachment Support**: Stores email attachments up to 50MB in Cloudflare R2.
-*   Provides comprehensive API endpoints for emails and attachments.
-*   Automatically cleans up old emails and attachments.
-*   Supports multiple file types including documents, images, and archives.
+[部署文档](https://temp-mail-docs.awsl.uk) | [Github Action 部署文档](https://temp-mail-docs.awsl.uk/zh/guide/actions/github-action.html)
 
-## Supporters
+<a href="https://temp-mail-docs.awsl.uk/zh/guide/actions/github-action.html">
+  <img src="https://deploy.workers.cloudflare.com/button" alt="Deploy to Cloudflare Workers" height="32">
+</a>
 
-A big thank you to individuals who have donated domains to support this project. Your contributions help keep this service running.
+## 更新日志
 
-| Domain | Donated by |
-| --- | --- |
-| `barid.site` | [vwh](https://github.com/vwh) |
-| `vwh.sh` | [vwh](https://github.com/vwh) |
-| `iusearch.lol` | [vwh](https://github.com/vwh) |
-| `lifetalk.us` | [mm6x](https://github.com/mm6x) |
-| `z44d.pro` | [z44d](https://github.com/z44d) |
-| `wael.fun` | [blockton](https://github.com/blockton) |
-| `tawbah.site` | [HprideH](https://github.com/HprideH) |
-| `kuruptd.ink` | [HprideH](https://github.com/HprideH) |
-| `oxno1.space` | [oxno1](https://github.com/oxno1) |
-| `hacktivc.com` | None |
-| `lealaom.xyz` | None |
-| `leala.site` | None |
+查看 [CHANGELOG](CHANGELOG.md) 了解最新更新内容。
 
-### How to Donate a Domain
+## 在线体验
 
-If you have an unused domain and would like to contribute, you can donate it by following these steps:
+立即体验 → [https://mail.awsl.uk/](https://mail.awsl.uk/)
 
-1.  **Create a Pull Request**: Add your domain and owner information to `config/domains.ts` file in `src` directory.
-2.  **Nameserver Provisioning**: After your pull request, we will provide you with nameservers to update for your domain.
+<details>
+<summary>服务状态监控（点击收缩/展开）</summary>
 
----
+|                                            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Backend](https://temp-email-api.awsl.uk/) | [![Deploy Backend Production](https://github.com/dreamhunter2333/cloudflare_temp_email/actions/workflows/backend_deploy.yaml/badge.svg)](https://github.com/dreamhunter2333/cloudflare_temp_email/actions/workflows/backend_deploy.yaml) ![](https://uptime.aks.awsl.icu/api/badge/10/status) ![](https://uptime.aks.awsl.icu/api/badge/10/uptime) ![](https://uptime.aks.awsl.icu/api/badge/10/ping) ![](https://uptime.aks.awsl.icu/api/badge/10/avg-response) ![](https://uptime.aks.awsl.icu/api/badge/10/cert-exp) ![](https://uptime.aks.awsl.icu/api/badge/10/response) |
+| [Frontend](https://mail.awsl.uk/)          | [![Deploy Frontend](https://github.com/dreamhunter2333/cloudflare_temp_email/actions/workflows/frontend_deploy.yaml/badge.svg)](https://github.com/dreamhunter2333/cloudflare_temp_email/actions/workflows/frontend_deploy.yaml) ![](https://uptime.aks.awsl.icu/api/badge/12/status) ![](https://uptime.aks.awsl.icu/api/badge/12/uptime) ![](https://uptime.aks.awsl.icu/api/badge/12/ping) ![](https://uptime.aks.awsl.icu/api/badge/12/avg-response) ![](https://uptime.aks.awsl.icu/api/badge/12/cert-exp) ![](https://uptime.aks.awsl.icu/api/badge/12/response)         |
 
-## Community
+</details>
 
-Here are some projects built by the community using or integrating with Temp Mail Worker:
+<details>
+<summary>Star History（点击收缩/展开）</summary>
 
-*   **Rust Library**: [doomed-neko/tmapi](https://github.com/doomed-neko/tmapi/)
-*   **Go Library**: [blockton/barid](https://github.com/blockton/barid)
-*   **Python Library**: [superhexa/barid-client](https://github.com/superhexa/barid-client)
-*   **CLI App**: [doomed-neko/tmcli](https://github.com/doomed-neko/tmcli)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=dreamhunter2333/cloudflare_temp_email&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=dreamhunter2333/cloudflare_temp_email&type=Date" />
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=dreamhunter2333/cloudflare_temp_email&type=Date" />
+</picture>
 
----
+</details>
 
-## Setup Guide
+<details open>
+<summary>目录（点击收缩/展开）</summary>
 
-### Prerequisites
+- [Cloudflare 临时邮箱 - 免费搭建临时邮件服务](#cloudflare-临时邮箱---免费搭建临时邮件服务)
+  - [部署文档 - 快速开始](#部署文档---快速开始)
+  - [更新日志](#更新日志)
+  - [在线体验](#在线体验)
+  - [核心功能](#核心功能)
+    - [邮件处理](#邮件处理)
+    - [用户管理](#用户管理)
+    - [管理功能](#管理功能)
+    - [多语言与界面](#多语言与界面)
+    - [集成与扩展](#集成与扩展)
+  - [技术架构](#技术架构)
+    - [系统架构](#系统架构)
+    - [技术栈](#技术栈)
+    - [主要组件](#主要组件)
+  - [加入社区](#加入社区)
 
-Before you begin, ensure you have following:
+</details>
 
-*   **Bun**: Installed on your system.
-*   **Cloudflare Account**: With access to Workers, Email Routing, and D1.
+## 核心功能
 
-### Project Setup
+<details open>
+<summary>核心功能详情（点击收缩/展开）</summary>
 
-1.  **Install Dependencies**: Install necessary JavaScript dependencies.
-    ```bash
-    bun install
-    ```
+### 邮件处理
 
-2.  **Login to Cloudflare**: You need to log in to your Cloudflare account via Wrangler. This will open a browser for authentication.
-    ```bash
-    bun wrangler login
-    ```
+- [x] 使用 `rust wasm` 解析邮件，解析速度快，几乎所有邮件都能解析，node 的解析模块解析邮件失败的邮件，rust wasm 也能解析成功
+- [x] **AI 邮件识别** - 使用 Cloudflare Workers AI 自动提取邮件中的验证码、认证链接、服务链接等重要信息
+- [x] 支持为指定基础域名创建随机二级域名邮箱地址，更适合收件隔离场景
+- [x] 支持发送邮件，支持 `DKIM` 验证
+- [x] 支持 `SMTP` 和 `Resend` 等多种发送方式 
+- [x] 增加查看 `附件` 功能，支持附件图片显示
+- [x] 支持 S3 附件存储和删除功能
+- [x] 垃圾邮件检测和黑白名单配置
+- [x] 邮件转发功能，支持全局转发地址
 
-### Cloudflare Configuration
+### 用户管理
 
-#### D1 Database Setup
+- [x] 使用 `凭证` 重新登录之前的邮箱
+- [x] 添加完整的用户注册登录功能，可绑定邮箱地址，绑定后可自动获取邮箱JWT凭证切换不同邮箱
+- [x] 支持 `OAuth2` 第三方登录（Github、Authentik 等）
+- [x] 支持 `Passkey` 无密码登录
+- [x] 用户角色管理，支持多角色域名和前缀配置
+- [x] 用户收件箱查看，支持地址和关键词过滤
 
-1.  **Create** D1 database**:
-    ```bash
-    bun run db:create
-    ```
-2.  **Copy** `database_id`: From output of above command.
-3.  **Update** `wrangler.jsonc`: Open `wrangler.jsonc` and replace `database_id` with `database_id` you just copied.
-4.  **Apply Database Schema**:
-    ```bash
-    bun run db:tables
-    ```
-5.  **Apply Database Indexes**:
-    ```bash
-    bun run db:indexes
-    ```
+### 管理功能
 
-#### R2 Bucket Setup
+- [x] 完整的 admin 控制台
+- [x] `admin` 后台创建无前缀邮箱
+- [x] admin 用户管理页面，增加用户地址查看功能
+- [x] 定时清理功能，支持多种清理策略
+- [x] 获取自定义名字的邮箱，`admin` 可配置黑名单
+- [x] 增加访问密码，可作为私人站点
 
-1.  **Create** R2 Bucket**:
-    ```bash
-    bun run r2:create
-    ```
-2.  **Create Preview Bucket** (for development):
-    ```bash
-    bun run r2:create-preview
-    ```
+### 多语言与界面
 
-#### Email Routing Setup
+- [x] 前后台均支持多语言
+- [x] 现代化 UI 设计，支持响应式布局
+- [x] 支持 Google Ads 集成
+- [x] 使用 shadow DOM 防止样式污染
+- [x] 支持 URL JWT 参数自动登录
 
-1.  **Go to your Cloudflare Dashboard**: Select your domain (`example.com`).
-2.  **Navigate to "Email" -> "Email Routing"**.
-3.  **Enable Email Routing** if it's not already enabled.
-4.  **Create a Catch-all Rule**:
-    *   For "Action", choose "Send to Worker".
-    *   Select your Worker (e.g., `temp-mail`).
-    *   Click "Save".
+### 集成与扩展
 
-## Running the Worker
+- [x] 完整的 `Telegram Bot` 支持，以及 `Telegram` 推送，Telegram Bot 小程序
+- [x] 添加 `SMTP proxy server`，支持 `SMTP` 发送邮件，`IMAP` 查看邮件
+- [x] Webhook 支持，消息推送集成
+- [x] 支持 `CF Turnstile` 人机验证
+- [x] 限流配置，防止滥用
+- [x] **Agent 友好**：内置 [`cf-temp-mail-agent-mail`](skills/cf-temp-mail-agent-mail/SKILL.md) skill，AI agent 可直接消费邮箱，详见 [文档](vitepress-docs/docs/zh/guide/feature/agent-email.md)
+- [x] 社区移动端管理客户端：[CloudMail](https://github.com/Lur1N77777/CloudMail) 基于 Expo / React Native，面向本项目兼容 API，提供 Android 管理员后台、地址管理、收件/发件/未知邮件、验证码快捷复制、OLED 黑主题和本地分组。
 
-### Cloudflare Information Script (Optional)
+</details>
 
-To check your Cloudflare Workers, D1 databases, and domain information directly from your terminal, you can use the `cf-info` script.
+## 技术架构
 
-1.  **Configure API Credentials**: Add your Cloudflare Account ID and an API Token with appropriate permissions (e.g., `Zone:Read`, `Worker Scripts:Read`, `D1:Read`, `Zone:Email:Read`) to your `.dev.vars` file.
+<details>
+<summary>技术架构详情（点击收缩/展开）</summary>
 
-    Example `.dev.vars` additions:
-    ```
-    CLOUDFLARE_ACCOUNT_ID="YOUR_CLOUDFLARE_ACCOUNT_ID"
-    CLOUDFLARE_API_TOKEN="YOUR_CLOUDFLARE_API_TOKEN"
-    ```
+### 系统架构
 
-2.  **Run** Script**:
-    ```bash
-    bun run cf-info
-    ```
+- **数据库**: Cloudflare D1 作为主数据库
+- **前端部署**: 使用 Cloudflare Pages 部署前端
+- **后端部署**: 使用 Cloudflare Workers 部署后端
+- **邮件转发**: 使用 Cloudflare Email Routing
 
-### Telegram Logging (Optional)
+### 技术栈
 
-If you wish to enable Telegram logging for your worker, follow these steps:
+- **前端**: Vue 3 + Vite + TypeScript
+- **后端**: TypeScript + Cloudflare Workers
+- **邮件解析**: Rust WASM (mail-parser-wasm)
+- **数据库**: Cloudflare D1 (SQLite)
+- **存储**: Cloudflare KV + R2 (可选 S3)
+- **代理服务**: Python SMTP/IMAP Proxy Server
 
-1.  **Enable Logging in `wrangler.jsonc`**: Ensure `TELEGRAM_LOG_ENABLE` is set to `true` in your `wrangler.jsonc` file under `vars` section.
+### 主要组件
 
-2.  **Local Development (`.dev.vars`)**: For local development, create a `.dev.vars` file in your project root with your Telegram bot token and chat ID. This file is used by `bun dev`.
+- **Worker**: 核心后端服务
+- **Frontend**: Vue 3 用户界面
+- **Mail Parser WASM**: Rust 邮件解析模块
+- **SMTP Proxy Server**: Python 邮件代理服务
+- **Pages Functions**: Cloudflare Pages 中间件
+- **Documentation**: VitePress 文档站点
 
-    Example `.dev.vars`:
-    ```
-    TELEGRAM_BOT_TOKEN="YOUR_TELEGRAM_BOT_TOKEN"
-    TELEGRAM_CHAT_ID="YOUR_TELEGRAM_CHAT_ID"
-    ```
+</details>
 
-3.  **Production Deployment (Secrets)**: For production, you must set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` as secrets using `wrangler`. This securely stores your sensitive information with Cloudflare.
+### 提醒
 
-    Run following commands in your terminal and enter respective values when prompted:
-    ```bash
-    bun wrangler secret put TELEGRAM_BOT_TOKEN
-    bun wrangler secret put TELEGRAM_CHAT_ID
-    ```
-
-### Local Development
-
-To run worker locally:
-
+- 在Resend添加域名记录时，如果您域名解析服务商正在托管您的3级域名a.b.com，请删除Resend生成的默认name中二级域名前缀b，否则将会添加a.b.b.com，导致验证失败。添加记录后，可通过
 ```bash
-bun run dev
+nslookup -qt="mx" a.b.com 1.1.1.1
 ```
+进行验证。 
 
-### Deployment
+## 加入社区
 
-To deploy your worker to Cloudflare:
-
-```bash
-bun run deploy
-```
-
-## Available Scripts
-
-### Development & Deployment
-- `bun run dev` - Start local development server
-- `bun run deploy` - Deploy to Cloudflare Workers
-- `bun run tail` - View live logs from deployed worker
-
-### Database Management
-- `bun run db:create` - Create D1 database
-- `bun run db:tables` - Apply database schema
-- `bun run db:indexes` - Apply database indexes
-- `bun run db:migrate-attachments` - Add attachment support to existing database
-
-### Storage Setup
-- `bun run r2:create` - Create R2 bucket for attachments
-- `bun run r2:create-preview` - Create R2 preview bucket
-
-### Code Quality
-- `bun run check` - Run all linting and formatting checks
-- `bun run lint` - Run ESLint
-- `bun run lint:fix` - Fix ESLint issues
-- `bun run format` - Format code with Prettier
-- `bun run tsc` - Run TypeScript compiler
-
-### Utilities
-- `bun run cf-info` - Display Cloudflare account information
-- `bun run cf-typegen` - Generate TypeScript types for Cloudflare bindings
-
-## API Endpoints
-
-### Email Endpoints
-
-- `GET /emails/{emailAddress}` - Get emails for a specific address
-- `GET /emails/count/{emailAddress}` - Get email count for a specific address
-- `GET /inbox/{emailId}` - Get a specific email by ID
-- `DELETE /emails/{emailAddress}` - Delete all emails for a specific address
-- `DELETE /inbox/{emailId}` - Delete a specific email by ID
-- `GET /domains` - Get list of supported domains
-
-### Attachment Endpoints
-
-- `GET /emails/{emailAddress}/attachments` - Get all attachments for emails sent to a specific address
-- `GET /inbox/{emailId}/attachments` - Get attachments for a specific email
-- `GET /attachments/{attachmentId}` - Download a specific attachment
-- `DELETE /attachments/{attachmentId}` - Delete a specific attachment
-
-### Attachment Features
-
-- **File Size Limit**: Up to 50MB per attachment
-- **File Count Limit**: Up to 10 attachments per email
-- **Supported File Types**:
-  - **Images**: JPEG, PNG, GIF, WebP, SVG
-  - **Documents**: PDF, TXT, CSV, Word, Excel, PowerPoint
-  - **Archives**: ZIP, RAR, 7Z
-  - **Other**: JSON, XML
-
-### Health Check
-
-- `GET /health` - Service health status
-
-For complete API documentation with examples, visit: [https://api.barid.site](https://api.barid.site)
+- [Telegram](https://t.me/cloudflare_temp_email)
