@@ -2,6 +2,10 @@
 
 export const DOMAINS = [
 	{
+		owner: "None",
+		domain: "admintest.shop",
+	},
+	{
 		owner: "vwh",
 		domain: "barid.site",
 	},
