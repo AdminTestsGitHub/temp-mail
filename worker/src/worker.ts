@@ -16,6 +16,7 @@ import { email } from './email';
 import { scheduled } from './scheduled';
 import { getPasswords, getBooleanValue, getStringArray, checkIsAdmin } from './utils';
 import { checkAccessControl } from './ip_blacklist';
+import { normalizeTimestampsMiddleware } from './middlewares/normalize_timestamps';
 
 const API_PATHS = [
 	"/api/",
@@ -29,6 +30,8 @@ const API_PATHS = [
 const app = new Hono<HonoCustomType>()
 //cors
 app.use('/*', cors());
+// normalize SQLite timestamps to RFC 3339 UTC in JSON responses (local patch)
+app.use('/*', normalizeTimestampsMiddleware);
 // error handler
 app.onError((err, c) => {
 	console.error(err)
